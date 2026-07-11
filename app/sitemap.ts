@@ -22,6 +22,10 @@ function route(path: string, priority: number, changeFrequency: MetadataRoute.Si
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes: MetadataRoute.Sitemap = [
+    route("/about/", 0.5, "yearly"),
+    route("/contact/", 0.5, "yearly"),
+    route("/privacy/", 0.4, "yearly"),
+    route("/terms/", 0.4, "yearly"),
     route("/", 1.0, "weekly"),
     route("/ai-prd-generator/", 0.9, "weekly"),
     route("/ai-product-manager/", 0.9, "weekly"),
@@ -52,6 +56,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     route("/ai-coding-tools/ai-agent-permissions-checklist/", 0.84, "monthly"),
     route("/pricing/", 0.95, "weekly"),
     route("/pro/", 0.9, "weekly"),
+    route("/tools/mcp-security-audit-pack/", 0.92, "weekly"),
     route("/guides/best-mcp-servers-for-claude/", 0.8, "monthly"),
     route("/guides/how-to-install-mcp-servers-in-cursor/", 0.8, "monthly"),
     route("/guides/use-bestmcpservers-api-with-chatgpt/", 0.8, "monthly"),

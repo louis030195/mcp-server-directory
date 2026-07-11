@@ -149,19 +149,11 @@ export default function Footer() {
           <p className="text-sm text-slate-500">
             &copy; 2026 BestMCPServers. All rights reserved.
           </p>
-          <div className="flex gap-6">
-            <Link href="/" className="text-sm text-slate-500 hover:text-slate-900 transition-colors">
-              Home
-            </Link>
-            <Link href="/rsp/" className="text-sm text-slate-500 hover:text-slate-900 transition-colors">
-              Prompt Library
-            </Link>
-            <Link href="/agents/" className="text-sm text-slate-500 hover:text-slate-900 transition-colors">
-              Agent Library
-            </Link>
-            <Link href="/tools/" className="text-sm text-slate-500 hover:text-slate-900 transition-colors">
-              Tools
-            </Link>
+          <div className="flex flex-wrap gap-6">
+            <Link href="/about/" className="text-sm text-slate-500 hover:text-slate-900 transition-colors">About</Link>
+            <Link href="/contact/" className="text-sm text-slate-500 hover:text-slate-900 transition-colors">Contact</Link>
+            <Link href="/privacy/" className="text-sm text-slate-500 hover:text-slate-900 transition-colors">Privacy</Link>
+            <Link href="/terms/" className="text-sm text-slate-500 hover:text-slate-900 transition-colors">Terms</Link>
           </div>
         </div>
       </div>

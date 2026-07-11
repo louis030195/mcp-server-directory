@@ -26,12 +26,19 @@ type SessionData = {
     plan_id?: string;
     current_period_end?: number;
   } | null;
+  purchases?: Array<{ plan_id?: string; status?: string }>;
 };
 
 type Props = {
-  plan: "builder" | "pro";
+  plan: "builder" | "pro" | "security-audit";
   label?: string;
   className?: string;
+};
+
+const PLAN_IDS: Record<Props["plan"], string> = {
+  builder: "plan_bestmcp_builder",
+  pro: "plan_bestmcp_pro",
+  "security-audit": "plan_bestmcp_security_audit",
 };
 
 function loginUrl(returnUrl?: string) {
@@ -147,7 +154,10 @@ export default function BillingCheckout({ plan, label, className }: Props) {
   const subscriptionPlanId = normalize(session?.subscription?.plan_id);
   const hasActivePro = ["active", "trialing"].includes(subscriptionStatus) && subscriptionPlanId.includes("bestmcp") && subscriptionPlanId.includes("pro");
   const hasBuilderAccess = hasActivePro || Number(session?.credits?.lifetime_purchased || 0) > 0;
-  const hasAccess = plan === "pro" ? hasActivePro : hasBuilderAccess;
+  const hasSecurityAudit = session?.purchases?.some(
+    (purchase) => purchase.plan_id === PLAN_IDS["security-audit"] && purchase.status === "active",
+  ) || false;
+  const hasAccess = plan === "pro" ? hasActivePro : plan === "security-audit" ? hasSecurityAudit : hasBuilderAccess;
 
   const buttonLabel = useMemo(() => {
     if (hasAccess) return plan === "pro" ? "Pro active — open workflows" : "Access active — open workflows";
@@ -155,7 +165,7 @@ export default function BillingCheckout({ plan, label, className }: Props) {
     if (status === "checking") return "Checking access...";
     if (status === "loading") return "Preparing checkout...";
     if (status === "redirecting") return "Redirecting to Stripe...";
-    return label || (plan === "builder" ? "Start Pro" : "Start Pro");
+    return label || (plan === "security-audit" ? "Buy for $29" : "Start Pro");
   }, [hasAccess, label, plan, status]);
 
   async function startCheckout() {
@@ -187,10 +197,7 @@ export default function BillingCheckout({ plan, label, className }: Props) {
       if (!plansRes.ok) throw new Error(await plansRes.text());
       const data = await plansRes.json();
       const plans = (data.plans || []) as Plan[];
-      const selected = plans.find((item) => {
-        const haystack = `${normalize(item.name)} ${normalize(item.product_name)} ${normalize(item.product_slug)} ${normalize(item.id)}`;
-        return haystack.includes(plan) && (haystack.includes("bestmcp") || haystack.includes("mcp") || haystack.includes("workflow"));
-      }) || plans.find((item) => normalize(item.name).includes(plan) || normalize(item.id).includes(plan));
+      const selected = plans.find((item) => item.id === PLAN_IDS[plan]);
 
       if (!selected?.id) {
         throw new Error(`No ${plan} plan is configured in billing yet.`);
@@ -208,8 +215,19 @@ export default function BillingCheckout({ plan, label, className }: Props) {
           cancel_url: `${window.location.origin}/pricing/?checkout=cancelled&plan=${plan}`,
         }),
       });
-      if (!checkoutRes.ok) throw new Error(await checkoutRes.text());
-      const checkout = await checkoutRes.json();
+      const checkout = await checkoutRes.json().catch(() => ({})) as { url?: string; error?: string; code?: string };
+      if (!checkoutRes.ok || !checkout.url) {
+        if (checkoutRes.status === 409 || checkout.code === "SUBSCRIPTION_ALREADY_ACTIVE") {
+          setSession((current) => ({
+            ...current,
+            subscription: current?.subscription || { status: "active", plan_id: selected.id },
+          }));
+          setMessage("Pro is already active on this account. Opening your workflow library instead.");
+          window.location.href = "/my-purchases/";
+          return;
+        }
+        throw new Error(checkout.error || "Checkout is unavailable right now.");
+      }
       if (!checkout.url) throw new Error("Stripe checkout URL missing");
       setStatus("redirecting");
       window.location.href = checkout.url;

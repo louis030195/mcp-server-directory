@@ -27,7 +27,15 @@ type SessionData = {
     plan_id?: string;
     current_period_end?: number;
   } | null;
+  purchases?: Array<{ plan_id?: string; status?: string; purchased_at?: number }>;
 };
+
+const SECURITY_AUDIT_PLAN_ID = "plan_bestmcp_security_audit";
+const securityAuditDownloads = [
+  { asset: "audit-workbook", label: "Audit workbook (.md)" },
+  { asset: "permission-scorecard", label: "Permission scorecard (.csv)" },
+  { asset: "rollout-checklist", label: "Production rollout checklist (.md)" },
+];
 
 type StoredUser = {
   email?: string;
@@ -185,13 +193,16 @@ export default function MyPurchasesClient({ workflowPacks }: Props) {
   const subscriptionPlanId = normalize(session?.subscription?.plan_id);
   const hasActivePro = ["active", "trialing"].includes(subscriptionStatus) && subscriptionPlanId.includes("bestmcp") && subscriptionPlanId.includes("pro");
   const hasBuilderAccess = hasActivePro || Number(session?.credits?.lifetime_purchased || 0) > 0;
+  const hasSecurityAudit = session?.purchases?.some(
+    (purchase) => purchase.plan_id === SECURITY_AUDIT_PLAN_ID && purchase.status === "active",
+  ) || false;
   const renewalDate = formatDate(session?.subscription?.current_period_end);
   const checkoutReturn = checkoutReturnRef.current;
 
   useEffect(() => {
     if (!checkoutReturn.isSuccess || !session || trackedEntitlementRef.current) return;
 
-    const entitlement = hasActivePro ? "pro" : hasBuilderAccess ? "builder" : "none";
+    const entitlement = hasSecurityAudit ? "security-audit" : hasActivePro ? "pro" : hasBuilderAccess ? "builder" : "none";
     if (entitlement === "none" && sessionCheck < 3) {
       const retryTimer = window.setTimeout(() => setSessionCheck((count) => count + 1), 2000);
       return () => window.clearTimeout(retryTimer);
@@ -203,7 +214,31 @@ export default function MyPurchasesClient({ workflowPacks }: Props) {
       stage: entitlement === "none" ? "post_checkout_verification_failed" : "post_checkout_entitlement_active",
       entitlement,
     });
-  }, [checkoutReturn.isSuccess, checkoutReturn.plan, hasActivePro, hasBuilderAccess, session, sessionCheck]);
+  }, [checkoutReturn.isSuccess, checkoutReturn.plan, hasActivePro, hasBuilderAccess, hasSecurityAudit, session, sessionCheck]);
+
+  async function downloadSecurityAuditAsset(asset: string) {
+    if (!token) return;
+    setMessage("");
+    try {
+      const response = await fetch(`${BILLING_API}/api/billing/downloads/${asset}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!response.ok) throw new Error(await response.text());
+      const blob = await response.blob();
+      const disposition = response.headers.get("Content-Disposition") || "";
+      const filename = disposition.match(/filename="([^"]+)"/)?.[1] || asset;
+      const href = URL.createObjectURL(blob);
+      const anchor = document.createElement("a");
+      anchor.href = href;
+      anchor.download = filename;
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
+      URL.revokeObjectURL(href);
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : "Download failed");
+    }
+  }
 
   const unlockedPacks = useMemo(() => {
     if (hasActivePro) return workflowPacks;
@@ -279,6 +314,27 @@ export default function MyPurchasesClient({ workflowPacks }: Props) {
           </div>
         ) : null}
       </section>
+
+      {hasSecurityAudit ? (
+        <section className="rounded-3xl border border-emerald-200 bg-emerald-50 p-8">
+          <p className="text-xs font-semibold uppercase tracking-widest text-emerald-700">Permanent purchase</p>
+          <h2 className="mt-3 text-2xl font-bold tracking-tight text-slate-950">MCP Security Audit Pack</h2>
+          <p className="mt-3 text-slate-700">Your complete pack is available through private, authenticated downloads.</p>
+          <div className="mt-6 flex flex-wrap gap-3">
+            {securityAuditDownloads.map((download) => (
+              <button
+                key={download.asset}
+                type="button"
+                onClick={() => void downloadSecurityAuditAsset(download.asset)}
+                className="rounded-xl bg-emerald-700 px-5 py-3 text-sm font-semibold text-white hover:bg-emerald-800"
+              >
+                {download.label}
+              </button>
+            ))}
+          </div>
+          {message ? <p className="mt-4 text-sm text-red-700">{message}</p> : null}
+        </section>
+      ) : null}
 
       {hasActivePro || hasBuilderAccess ? (
         <section>

@@ -82,6 +82,7 @@ const freeBuilderGroups = [
     description: "Check permissions, AI search visibility, and rapid index pickup before turning an agent workflow loose.",
     links: [
       { href: "/tools/agent-permission-builder/", label: "Agent Permission Builder" },
+      { href: "/tools/mcp-security-audit-pack/", label: "MCP Security Audit Pack" },
       { href: "/tools/ai-search-visibility-checker/", label: "AI Search Visibility Checker" },
       { href: "/tools/rapid-index-checker/", label: "SEO Rapid Index Checker" },
       { href: "/guides/mcp-server-security-checklist/", label: "MCP Server Security Checklist" },
@@ -162,6 +163,12 @@ export default function Home() {
                 className="inline-flex items-center justify-center rounded-xl bg-blue-500 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-blue-500/20 transition hover:bg-blue-400"
               >
                 View Builder & Pro pricing
+              </Link>
+              <Link
+                href="/tools/mcp-security-audit-pack/"
+                className="inline-flex items-center justify-center rounded-xl border border-emerald-300/40 bg-emerald-400/10 px-6 py-3 text-sm font-bold text-emerald-100 transition hover:bg-emerald-400/20"
+              >
+                Open MCP Security Audit Pack
               </Link>
               <Link
                 href="/workflows/"
@@ -295,8 +302,21 @@ export default function Home() {
               Use free security tools to define least-privilege scopes, review AI search visibility, and then upgrade to Pro when you need audit-ready implementation steps.
             </p>
           </div>
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <Link href="/tools/mcp-security-audit-pack/" className="inline-flex items-center justify-center rounded-xl bg-blue-600 px-5 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-blue-500">
+              Download MCP Security Audit Pack
+            </Link>
+            <Link href="/pro/" className="inline-flex items-center justify-center rounded-xl border border-slate-300 px-5 py-3 text-sm font-bold text-slate-900 transition hover:border-blue-300 hover:text-blue-700">
+              See Pro workflow assets
+            </Link>
+          </div>
           <div className="mt-10 grid gap-6 lg:grid-cols-3">
             {[
+              {
+                href: "/tools/mcp-security-audit-pack/",
+                label: "MCP Security Audit Pack",
+                text: "Download a concrete audit worksheet, permission scorecard, and rollout checklist before enabling production MCP access.",
+              },
               {
                 href: "/guides/best-ai-agent-workflow-tools/",
                 label: "Best AI Agent Workflow Tools",

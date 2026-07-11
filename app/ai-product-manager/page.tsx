@@ -54,9 +54,9 @@ const templates = [
     description: "Choose the MCP server categories and setup order needed for the product workflow.",
   },
   {
-    title: "Pro workflow packs",
+    title: "Security Audit Pack",
     href: "/pro/",
-    description: "Upgrade from planning artifacts to repeatable shipping workflows for coding, QA, security, and launch.",
+    description: "Turn planning artifacts into a repeatable security audit workflow with coding checks, QA proof, risk notes, and launch-ready evidence.",
   },
 ];
 

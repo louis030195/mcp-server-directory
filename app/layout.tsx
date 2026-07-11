@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Footer from "@/components/Footer";
 import Script from "next/script";
 import "./globals.css";
 
@@ -107,7 +108,10 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="antialiased bg-white text-slate-900">{children}</body>
+      <body className="antialiased bg-white text-slate-900">
+        {children}
+        <Footer />
+      </body>
     </html>
   );
 }

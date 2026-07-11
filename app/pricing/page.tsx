@@ -3,8 +3,8 @@ import type { Metadata } from "next";
 import BillingCheckout from "@/components/BillingCheckout";
 import { topLaunchPacks, workflowPacks } from "@/data/workflowPacks";
 
-const title = "BestMCPServers Pricing | Free Directory and Pro";
-const description = "Choose the BestMCPServers plan that fits your workflow: use the free MCP directory or upgrade to Pro for $19/month to unlock workflow packs, implementation checklists, and ongoing updates.";
+const title = "MCP Security Audit Pack Pricing | BestMCPServers Pro";
+const description = "Compare the free MCP directory with BestMCPServers Pro, built around the MCP Security Audit Pack for permission review, prompt injection testing, rollout gates, and approval-ready security reports.";
 
 export const metadata: Metadata = {
   title,
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 const faq = [
   {
     q: "What stays free, and what is paid?",
-    a: "The directory, guides, and free tools stay free. Pro is $19/month for the full workflow library, implementation checklists, and ongoing updates.",
+    a: "The directory, guides, and free tools stay free. Pro is $19/month when you need the MCP Security Audit Pack, approval-ready security report structure, implementation checklists, and ongoing workflow updates.",
   },
   {
     q: "Do I need a new account?",
@@ -31,7 +31,7 @@ const faq = [
   },
   {
     q: "Will this lock basic SEO pages?",
-    a: "No. Public directory, guides, and tools remain indexable. Paid value is concentrated in production workflow packs and Pro-only implementation details.",
+    a: "No. Public directory, guides, and tools remain indexable. Paid value is concentrated in the MCP security audit workflow, production approval checklist, and Pro-only implementation details.",
   },
   {
     q: "Which AI coding tools are covered?",
@@ -39,7 +39,11 @@ const faq = [
   },
   {
     q: "What makes Pro different from the free security tools?",
-    a: "Free tools help you generate a permission plan or visibility check. Pro adds workflow packs, implementation checklists, audit report structure, and repeatable acceptance steps for teams shipping agent workflows.",
+    a: "Free tools help you generate a first-pass permission plan or visibility check. Pro packages that into an MCP security audit workflow with risk scoring, prompt injection review, report sections, remediation steps, and repeatable acceptance gates.",
+  },
+  {
+    q: "What is the flagship paid asset?",
+    a: "MCP Security Audit Pack is the flagship bundle: permission review, prompt injection testing, rollout gates, risk notes, and a copy-ready approval path for production MCP access. It is a security audit package, not a generic server list.",
   },
 ];
 
@@ -63,11 +67,12 @@ export default function PricingPage() {
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-4xl text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.3em] text-blue-300">Pricing</p>
-          <h1 className="mt-5 text-4xl font-bold tracking-tight sm:text-6xl">Free directory. Pro workflows when you need execution.</h1>
-          <p className="mt-6 text-lg leading-8 text-slate-300">Browse MCP servers for free. Upgrade through BestMCPServers Account when you want copy-ready workflow packs, safety checklists, and implementation guidance for Claude Code, Cursor, Codex, Gemini CLI, and Hermes.</p>
+          <h1 className="mt-5 text-4xl font-bold tracking-tight sm:text-6xl">Free MCP directory. Pro MCP security audit pack when you need approval.</h1>
+          <p className="mt-6 text-lg leading-8 text-slate-300">Browse MCP servers for free. Upgrade through BestMCPServers Account when you need a structured MCP security audit package: permission scoring templates, prompt injection tests, rollout gates, security report sections, and implementation guidance for Claude Code, Cursor, Codex, Gemini CLI, and Hermes.</p>
           <p className="mt-4 text-sm text-slate-400">Sign-in and checkout run on <span className="font-semibold text-blue-200">auth.bestmcpservers.com</span>, the branded account center for BestMCPServers purchases.</p>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <Link href="/workflows/" className="rounded-xl bg-white px-6 py-3 text-sm font-semibold text-slate-950 hover:bg-slate-100">View workflow packs</Link>
+            <Link href="/tools/mcp-security-audit-pack/" className="rounded-xl bg-white px-6 py-3 text-sm font-semibold text-slate-950 hover:bg-slate-100">Preview security audit pack</Link>
+            <Link href="/workflows/" className="rounded-xl border border-white/20 px-6 py-3 text-sm font-semibold text-white hover:bg-white/10">View workflow packs</Link>
             <Link href="/pro/" className="rounded-xl border border-white/20 px-6 py-3 text-sm font-semibold text-white hover:bg-white/10">See Pro benefits</Link>
             <Link href="/my-purchases/" className="rounded-xl border border-white/20 px-6 py-3 text-sm font-semibold text-white hover:bg-white/10">My purchases</Link>
           </div>
@@ -98,15 +103,20 @@ export default function PricingPage() {
               <div><p className="text-xs font-bold uppercase tracking-widest text-blue-200">Recommended</p><h2 className="mt-1 text-2xl font-bold">Pro</h2></div>
               <p><span className="text-4xl font-bold">$19</span><span className="text-slate-400">/mo</span></p>
             </div>
-            <p className="mt-4 text-slate-300">For builders who want the complete operating system for AI coding workflows, QA, security, and launch execution.</p>
+            <p className="mt-4 text-slate-300">For builders who need a repeatable MCP security review before connecting tools, private repos, credentials, and agent workflows to production systems.</p>
             <ul className="mt-6 space-y-3 text-sm text-slate-200">
               <li>✓ All 10 workflow packs across Claude Code, Cursor, Codex, Gemini CLI, and Hermes</li>
               <li>✓ Pro-only implementation checklists and acceptance steps</li>
-              <li>✓ MCP security, QA, launch, and production setup workflows</li>
-              <li>✓ Agent permission reports and AI search visibility audit workflows</li>
+              <li>✓ Flagship MCP Security Audit Pack with permission scoring, prompt injection tests, and rollout gates</li>
+              <li>✓ Approval-ready security report outline, risk notes, and remediation checklist</li>
               <li>✓ Updates as workflow packs improve</li>
             </ul>
-            <div className="mt-8"><BillingCheckout plan="pro" label="Continue with BestMCPServers Account" className="inline-flex w-full items-center justify-center rounded-xl bg-blue-500 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-400 disabled:cursor-not-allowed disabled:bg-slate-500" /></div>
+            <div className="mt-8 space-y-3">
+              <BillingCheckout plan="pro" label="Continue with BestMCPServers Account" className="inline-flex w-full items-center justify-center rounded-xl bg-blue-500 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-400 disabled:cursor-not-allowed disabled:bg-slate-500" />
+              <Link href="/tools/mcp-security-audit-pack/" className="inline-flex w-full items-center justify-center rounded-xl border border-blue-300/50 px-5 py-3 text-sm font-semibold text-blue-100 transition hover:bg-blue-400/10">
+                Preview MCP Security Audit Pack
+              </Link>
+            </div>
           </div>
         </div>
 
@@ -127,17 +137,18 @@ export default function PricingPage() {
           <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
             <div>
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-blue-200">Pro audit value</p>
-              <h2 className="mt-3 text-3xl font-bold tracking-tight">From free checker to client-ready report</h2>
+              <h2 className="mt-3 text-3xl font-bold tracking-tight">From free checker to approval-ready MCP security audit</h2>
               <p className="mt-4 leading-7 text-slate-300">
-                The free Agent Permission Builder and AI Search Visibility Checker create the first pass. Pro turns those outputs into repeatable audit workflows: scope review, risk notes, acceptance checks, and launch-ready remediation steps.
+                The free Agent Permission Builder and AI Search Visibility Checker create the first pass. Pro turns those outputs into a repeatable MCP security audit workflow: scope review, permission risk scoring, prompt injection review, acceptance checks, and launch-ready remediation steps.
               </p>
             </div>
             <div className="rounded-2xl border border-white/10 bg-slate-950/60 p-6">
               <h3 className="font-bold text-white">Included in Pro workflows</h3>
               <ul className="mt-4 space-y-3 text-sm text-slate-300">
                 <li>✓ Team audit checklist for MCP and agent permissions</li>
-                <li>✓ Pro report outline for visibility and security findings</li>
+                <li>✓ Pro report outline for permission, injection, and rollout findings</li>
                 <li>✓ Acceptance steps before production launch</li>
+                <li>✓ Security review path for prompt injection and rollout gates</li>
                 <li>✓ No unlimited usage or unimplemented team-seat claims</li>
               </ul>
             </div>

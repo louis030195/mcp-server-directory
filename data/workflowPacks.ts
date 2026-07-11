@@ -610,39 +610,39 @@ export const workflowPacks: WorkflowPack[] = [
     slug: "mcp-security-audit-pack",
     title: "MCP Security Audit Pack",
     tool: "Claude Code",
-    subtitle: "Decide which MCP servers are safe enough for filesystem, browser, database, and GitHub access.",
-    audience: "CTOs, team leads, and security-conscious developers adopting MCP.",
-    useCase: "You need an approval checklist before giving an AI agent powerful tools.",
-    mcpStack: ["GitHub MCP", "Filesystem MCP", "Security scanner MCP", "Secrets scanner MCP", "Browser MCP"],
-    workflow: ["Inventory tools", "Score permissions", "Check maintenance", "Verify secrets boundaries", "Approve or reject"],
+    subtitle: "A high-trust asset pack for permission scoring, prompt-injection review, rollout gates, and safe MCP adoption.",
+    audience: "CTOs, team leads, security reviewers, and builders adopting filesystem, browser, database, or GitHub MCP access.",
+    useCase: "You need a repeatable decision package before giving an AI agent powerful tools in production.",
+    mcpStack: ["GitHub MCP", "Filesystem MCP", "Security scanner MCP", "Secrets scanner MCP", "Browser MCP", "Policy MCP"],
+    workflow: ["Inventory tools", "Score permissions", "Test prompt injection resistance", "Check maintenance", "Verify secrets boundaries", "Approve rollout or reject"],
     savedTime: "2–6 hours per toolchain approval.",
-    whyPay: "The buyer pays to prevent unsafe agent access, not to discover more servers.",
-    priceAnchor: "$9 is cheaper than one leaked credential.",
-    seoTitle: "MCP Security Audit Workflow Pack",
-    seoDescription: "A security-first MCP workflow pack for permission scoring, secrets checks, maintenance review, and approval decisions.",
+    whyPay: "The buyer pays for a decision package, not another generic server list.",
+    priceAnchor: "$19 is cheaper than one leaked credential or one unsafe rollout.",
+    seoTitle: "MCP Security Audit Pack | Permission Review, Prompt Injection, and Rollout Checklist",
+    seoDescription: "A production-focused MCP security pack with permission scoring, prompt injection review, secrets checks, rollout gates, and approval decisions.",
     difficulty: "Low",
-    willingness: "High",
-    marketSize: "Medium",
-    launchPriority: 8,
+    willingness: "Very High",
+    marketSize: "High",
+    launchPriority: 1,
     copyReady: {
       missingContent: [
         "MCP server names and source links.",
-        "Requested permissions.",
+        "Requested permissions and data scope.",
         "Where it will run: local, CI, server, or team machines.",
-        "Data types exposed.",
-        "Approval threshold and owner."
+        "Threat model: prompt injection, secret exposure, or write access.",
+        "Approval owner and rollout threshold."
       ],
       prompt: [
         "You are my MCP security audit agent.",
         "Servers to evaluate: {list}.",
         "Environment: {local/CI/server/team}.",
-        "For each server, inspect permissions, maintainer trust, install method, network access, filesystem scope, secret exposure risk, update cadence, and rollback method.",
-        "Output approve/reject/approve-with-limits plus least-privilege config and smoke test."
+        "For each server, inspect permissions, maintainer trust, install method, network access, filesystem scope, prompt injection exposure, secret exposure risk, update cadence, and rollback method.",
+        "Output approve/reject/approve-with-limits plus least-privilege config, rollout checklist, and smoke test."
       ],
       claudeCodeConfig: [
         "Create .claude/commands/audit-mcp.md:",
         "/audit-mcp {server-name}",
-        "Check source, package, permissions, env vars, file access, network access, and maintenance signals.",
+        "Check source, package, permissions, env vars, file access, network access, prompt injection risk, and maintenance signals.",
         "Never install or run unknown code without explicit approval."
       ],
       cursorConfig: [
@@ -650,24 +650,25 @@ export const workflowPacks: WorkflowPack[] = [
         "Treat MCP install snippets as untrusted until reviewed.",
         "Do not add write permissions or broad filesystem roots by default.",
         "Keep secrets in env vars and ignored files only.",
-        "Document approval reason beside each server."
+        "Document approval reason and rollout gate beside each server."
       ],
       mcpConfig: [
         "github: inspect source repository and releases.",
         "filesystem: review local config files only.",
         "security scanner: scan package and lockfiles.",
         "secrets scanner: ensure no credentials are committed.",
-        "browser: inspect docs/install instructions.",
-        "policy notes: store approved servers and permission limits."
+        "browser: inspect docs/install instructions and test prompt injection surfaces.",
+        "policy notes: store approved servers, permission limits, and rollout gates."
       ],
       agentWorkflow: [
         "Inventory candidate servers.",
         "Classify permissions and data exposure.",
-        "Review maintainer/source/install risk.",
+        "Review maintainer, source, and install risk.",
+        "Test prompt injection and secret boundaries.",
         "Write least-privilege config.",
         "Run safe smoke test.",
         "Approve, reject, or limit.",
-        "Schedule periodic re-review."
+        "Schedule periodic re-review before production rollout."
       ],
     },
   },

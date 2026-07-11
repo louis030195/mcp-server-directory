@@ -5,8 +5,8 @@ import BillingCheckout from "@/components/BillingCheckout";
 import BuilderPackAccess from "@/components/BuilderPackAccess";
 import { workflowPacks } from "@/data/workflowPacks";
 
-const title = "BestMCPServers Pro | Production MCP Workflows for AI Coding Agents";
-const description = "BestMCPServers Pro gives builders production-ready MCP workflow packs for repo onboarding, feature shipping, PR review, browser QA, security audits, and AI team operations.";
+const title = "BestMCPServers Pro | MCP Security Audit Pack for Production AI Workflows";
+const description = "BestMCPServers Pro unlocks the MCP Security Audit Pack: permission scoring, prompt injection testing, rollout gates, remediation checklists, and approval-ready reports for production AI workflows.";
 
 export const metadata: Metadata = {
   title,
@@ -17,8 +17,8 @@ export const metadata: Metadata = {
 };
 
 const faq = [
-  { q: "What is included in Pro?", a: "All workflow packs, Pro-only implementation steps, MCP stack recommendations, security checklists, and future premium generators." },
-  { q: "Does Pro replace the free directory?", a: "No. The free directory stays open for SEO and discovery. Pro focuses on implementation outcomes." },
+  { q: "What is included in Pro?", a: "All workflow packs, Pro-only implementation steps, MCP stack recommendations, MCP Security Audit Pack samples, permission scoring, prompt injection review, rollout gates, remediation checklists, and future premium generators." },
+  { q: "Does Pro replace the free directory?", a: "No. The free directory stays open for SEO and discovery. Pro focuses on implementation outcomes and the structured MCP security audit package needed before production access." },
   { q: "How does purchase work?", a: "Click a Pro checkout button, sign in with Google if needed, and complete payment through Stripe Billing." },
 ];
 
@@ -42,22 +42,28 @@ export default function ProPage() {
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1fr_420px] lg:items-center">
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.3em] text-blue-300">Pro Access</p>
-            <h1 className="mt-5 text-4xl font-bold tracking-tight sm:text-6xl">The paid layer for developers who want MCP outcomes.</h1>
-            <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">BestMCPServers Pro turns discovery into execution: choose a safe MCP stack, wire it into your AI coding tool, and use it to ship features, review PRs, verify production, and operate an AI team.</p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row"><Link href="/workflows/" className="rounded-xl bg-white px-6 py-3 text-center text-sm font-semibold text-slate-950 hover:bg-slate-100">Browse workflows</Link><Link href="/pricing/" className="rounded-xl border border-white/20 px-6 py-3 text-center text-sm font-semibold text-white hover:bg-white/10">Compare pricing</Link><Link href="/my-purchases/" className="rounded-xl border border-white/20 px-6 py-3 text-center text-sm font-semibold text-white hover:bg-white/10">My purchases</Link></div>
+            <h1 className="mt-5 text-4xl font-bold tracking-tight sm:text-6xl">The paid MCP security audit pack for production agent workflows.</h1>
+            <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">BestMCPServers Pro turns discovery into an approval-ready security review: choose a safe MCP stack, score permissions, test prompt injection exposure, set rollout gates, document remediation, and use AI coding tools to ship, review, verify, and operate with evidence.</p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row"><Link href="/tools/mcp-security-audit-pack/" className="rounded-xl bg-white px-6 py-3 text-center text-sm font-semibold text-slate-950 hover:bg-slate-100">Preview Security Audit Pack</Link><Link href="/workflows/" className="rounded-xl border border-white/20 px-6 py-3 text-center text-sm font-semibold text-white hover:bg-white/10">Browse workflows</Link><Link href="/pricing/" className="rounded-xl border border-white/20 px-6 py-3 text-center text-sm font-semibold text-white hover:bg-white/10">Compare pricing</Link><Link href="/my-purchases/" className="rounded-xl border border-white/20 px-6 py-3 text-center text-sm font-semibold text-white hover:bg-white/10">My purchases</Link></div>
           </div>
           <div className="rounded-3xl border border-white/10 bg-white p-8 text-slate-950 shadow-2xl">
             <p className="text-sm font-semibold text-blue-700">Best value</p>
             <h2 className="mt-2 text-3xl font-bold">Pro · $19/mo</h2>
-            <p className="mt-3 text-slate-600">Unlock all workflow packs, security audit steps, and Pro-only implementation details.</p>
+            <p className="mt-3 text-slate-600">Unlock the MCP Security Audit Pack, all workflow packs, report-ready review steps, and Pro-only implementation details.</p>
             <ul className="mt-6 space-y-3 text-sm text-slate-700">
               <li>✓ 10 workflow packs for Claude Code, Cursor, Codex, Gemini CLI, and Hermes</li>
               <li>✓ Top 3 72-hour launch packs included immediately</li>
-              <li>✓ MCP security approval workflow</li>
+              <li>✓ MCP security approval workflow for production agent access</li>
+              <li>✓ Flagship MCP Security Audit Pack with permission scoring, prompt injection testing, remediation notes, and rollout gates</li>
               <li>✓ Production QA and launch verification workflow</li>
               <li>✓ Builder-style workflow packs included in Pro</li>
             </ul>
-            <div className="mt-8"><BillingCheckout plan="pro" label="Start Pro" /></div>
+            <div className="mt-8 space-y-3">
+              <BillingCheckout plan="pro" label="Start Pro" />
+              <Link href="/tools/mcp-security-audit-pack/" className="inline-flex w-full items-center justify-center rounded-xl border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-50">
+                Preview MCP Security Audit Pack
+              </Link>
+            </div>
           </div>
         </div>
       </section>
