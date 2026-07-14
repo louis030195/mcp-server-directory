@@ -3,12 +3,32 @@ import { eventDimensions, parseAiPmEvent } from "../../../lib/analytics/ai-pm-ev
 type KvNamespace = {
   get(key: string): Promise<string | null>;
   put(key: string, value: string, options?: { expirationTtl?: number }): Promise<void>;
-  list(options: { prefix: string }): Promise<{ keys: Array<{ name: string }> }>;
+  list(options: { prefix: string; cursor?: string }): Promise<{ keys: Array<{ name: string }>; list_complete?: boolean; cursor?: string }>;
 };
 
 type Context = { request: Request; env: { AI_PM_ANALYTICS?: KvNamespace } };
 const headers = { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" };
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers });
+const DAY_MS = 24 * 60 * 60 * 1000;
+const MAX_REPORT_DAYS = 31;
+
+function parseDate(value: string | null) {
+  if (!value || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
+  const timestamp = Date.parse(`${value}T00:00:00Z`);
+  return Number.isNaN(timestamp) || new Date(timestamp).toISOString().slice(0, 10) !== value ? null : timestamp;
+}
+
+async function listAll(namespace: KvNamespace, prefix: string) {
+  const names: string[] = [];
+  let cursor: string | undefined;
+  do {
+    const page = await namespace.list({ prefix, cursor });
+    names.push(...page.keys.map(({ name }) => name));
+    if (page.list_complete !== false) break;
+    cursor = page.cursor;
+  } while (cursor);
+  return names;
+}
 
 export async function onRequestPost({ request, env }: Context) {
   if (!env.AI_PM_ANALYTICS) return json({ accepted: false, code: "SINK_UNAVAILABLE" }, 503);
@@ -25,10 +45,22 @@ export async function onRequestPost({ request, env }: Context) {
 
 export async function onRequestGet({ request, env }: Context) {
   if (!env.AI_PM_ANALYTICS) return json({ success: false, code: "SINK_UNAVAILABLE" }, 503);
-  const date = new URL(request.url).searchParams.get("date") || new Date().toISOString().slice(0, 10);
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return json({ success: false, code: "INVALID_DATE" }, 400);
-  const listed = await env.AI_PM_ANALYTICS.list({ prefix: `event:${date}:` });
-  const records = await Promise.all(listed.keys.map(({ name }) => env.AI_PM_ANALYTICS!.get(name)));
+  const params = new URL(request.url).searchParams;
+  const today = new Date().toISOString().slice(0, 10);
+  const from = params.get("from") || params.get("date") || today;
+  const to = params.get("to") || params.get("date") || from;
+  const fromTime = parseDate(from);
+  const toTime = parseDate(to);
+  if (fromTime === null || toTime === null || toTime < fromTime || (toTime - fromTime) / DAY_MS >= MAX_REPORT_DAYS) {
+    return json({ success: false, code: "INVALID_DATE_RANGE" }, 400);
+  }
+
+  const names: string[] = [];
+  for (let time = fromTime; time <= toTime; time += DAY_MS) {
+    const date = new Date(time).toISOString().slice(0, 10);
+    names.push(...await listAll(env.AI_PM_ANALYTICS, `event:${date}:`));
+  }
+  const records = await Promise.all(names.map((name) => env.AI_PM_ANALYTICS!.get(name)));
   const totals = new Map<string, number>();
   for (const record of records) {
     if (!record) continue;
@@ -37,7 +69,7 @@ export async function onRequestGet({ request, env }: Context) {
     totals.set(key, (totals.get(key) || 0) + 1);
   }
   const counts = Array.from(totals, ([key, count]) => ({ key, count })).sort((a, b) => a.key.localeCompare(b.key));
-  return json({ success: true, date, eventCount: records.filter(Boolean).length, counts });
+  return json({ success: true, from, to, eventCount: records.filter(Boolean).length, counts });
 }
 
 export async function onRequest() {
