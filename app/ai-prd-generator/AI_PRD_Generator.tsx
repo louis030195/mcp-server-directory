@@ -11,6 +11,7 @@ import {
   ChevronDown,
   ChevronUp,
 } from "lucide-react";
+import { trackAiPmToolComplete } from "@/lib/analytics/ai-pm-client";
 
 interface FormData {
   productName: string;
@@ -150,6 +151,7 @@ ${form.successMetrics || "[Define measurable KPIs and targets]"}
 `;
     setGenerated(prd);
     setShowPreview(true);
+    if (prd.trim()) trackAiPmToolComplete("prd");
   }, [form]);
 
   const copyToClipboard = useCallback(async () => {

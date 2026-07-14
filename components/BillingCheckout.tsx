@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { trackAiPmBillingStage } from "@/lib/analytics/ai-pm-client";
 
 const BILLING_API = "https://auth.bestmcpservers.com";
 const SESSION_KEY = "bestmcpservers_session_token";
@@ -169,7 +170,9 @@ export default function BillingCheckout({ plan, label, className }: Props) {
   }, [hasAccess, label, plan, status]);
 
   async function startCheckout() {
-    trackCtaClick(plan, hasAccess ? "already_unlocked" : token ? "checkout_start" : "login_start");
+    const stage = hasAccess ? "already_unlocked" : token ? "checkout_start" : "login_start";
+    trackCtaClick(plan, stage);
+    if (stage === "login_start" || stage === "checkout_start") trackAiPmBillingStage(stage);
 
     if (hasAccess) {
       window.location.href = "/my-purchases/";

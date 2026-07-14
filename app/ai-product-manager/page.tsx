@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import AiPmCtaLink from "@/components/AiPmCtaLink";
 
 const baseUrl = "https://bestmcpservers.com";
 
@@ -154,9 +155,9 @@ export default function AiProductManagerPage() {
             Plan AI products with PRDs, agent requirements, MCP stack choices, cost assumptions, acceptance criteria, and launch evidence before you ask coding agents to build.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <Link href="/ai-prd-generator/" className="rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-500">Create a PRD</Link>
-            <Link href="/tools/mcp-stack-builder/" className="rounded-xl border border-white/20 px-5 py-3 font-semibold text-white hover:bg-white/10">Plan MCP stack</Link>
-            <Link href="/pro/" className="rounded-xl border border-white/20 px-5 py-3 font-semibold text-white hover:bg-white/10">Upgrade workflow</Link>
+            <AiPmCtaLink action="create_prd" href="/ai-prd-generator/" className="rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-500">Create a PRD</AiPmCtaLink>
+            <AiPmCtaLink action="plan_stack" href="/tools/mcp-stack-builder/" className="rounded-xl border border-white/20 px-5 py-3 font-semibold text-white hover:bg-white/10">Plan MCP stack</AiPmCtaLink>
+            <AiPmCtaLink action="upgrade" href="/pro/" className="rounded-xl border border-white/20 px-5 py-3 font-semibold text-white hover:bg-white/10">Upgrade workflow</AiPmCtaLink>
           </div>
         </div>
       </section>

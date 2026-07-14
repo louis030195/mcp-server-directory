@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import { trackAiPmBillingStage } from "@/lib/analytics/ai-pm-client";
 
 const BILLING_API = "https://auth.bestmcpservers.com";
 const SESSION_KEY = "bestmcpservers_session_token";
@@ -173,6 +174,7 @@ export default function MyPurchasesClient({ workflowPacks }: Props) {
               plan: checkoutReturn.plan,
               stage: "checkout_return",
             });
+            trackAiPmBillingStage("checkout_success");
           }
         }
       })
@@ -214,6 +216,7 @@ export default function MyPurchasesClient({ workflowPacks }: Props) {
       stage: entitlement === "none" ? "post_checkout_verification_failed" : "post_checkout_entitlement_active",
       entitlement,
     });
+    if (entitlement !== "none") trackAiPmBillingStage("entitlement_active");
   }, [checkoutReturn.isSuccess, checkoutReturn.plan, hasActivePro, hasBuilderAccess, hasSecurityAudit, session, sessionCheck]);
 
   async function downloadSecurityAuditAsset(asset: string) {

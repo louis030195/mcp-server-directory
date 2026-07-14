@@ -1,8 +1,9 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { CheckCircle2, Copy, Network } from "lucide-react";
 import { agentGoals, buildMcpStack, clientOptions, dataSourceOptions, deploymentPreferences, securityLevels, type AgentGoal, type DeploymentPreference, type McpClient, type SecurityLevel } from "@/data/mcpStackBuilder";
+import { trackAiPmToolComplete } from "@/lib/analytics/ai-pm-client";
 
 export default function MCPStackBuilder() {
   const [goal, setGoal] = useState<AgentGoal>("coding");
@@ -10,9 +11,17 @@ export default function MCPStackBuilder() {
   const [dataSources, setDataSources] = useState<string[]>(["Filesystem", "GitHub"]);
   const [securityLevel, setSecurityLevel] = useState<SecurityLevel>("Read only");
   const [deployment, setDeployment] = useState<DeploymentPreference>("Local");
+  const renderedResult = useRef(false);
 
   const stack = useMemo(() => buildMcpStack(goal, client, dataSources, securityLevel, deployment), [client, dataSources, deployment, goal, securityLevel]);
   const selectedGoal = agentGoals.find((item) => item.id === goal) ?? agentGoals[0];
+
+  useEffect(() => {
+    if (!renderedResult.current && stack.categories.length > 0 && stack.setupSteps.length > 0) {
+      renderedResult.current = true;
+      trackAiPmToolComplete("stack");
+    }
+  }, [stack.categories.length, stack.setupSteps.length]);
 
   const toggleDataSource = (source: string) => {
     setDataSources((current) => current.includes(source) ? current.filter((item) => item !== source) : [...current, source]);
