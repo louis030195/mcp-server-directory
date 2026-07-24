@@ -63,7 +63,7 @@ export default function RootLayout({
         <Script
           defer
           data-domain="bestmcpservers.com"
-          src="https://plausible.io/js/script.js"
+          src="https://plausible.shipsolo.io/js/script.js"
           strategy="afterInteractive"
         />
         <script
