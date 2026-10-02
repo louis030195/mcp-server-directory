@@ -70,6 +70,15 @@ export const servers: MCPServer[] = [
     clients: ['claude', 'cursor', 'generic'],
   },
   {
+    id: 'hyperconsciousness',
+    name: 'Hyperconsciousness',
+    description: 'Developer-alpha Rust knowledge store with encrypted, append-only records and scoped MCP reads. Install hc and create a read grant first; see repository setup.',
+    category: 'database',
+    githubUrl: 'https://github.com/louis030195/hyperconsciousness',
+    installCommand: 'hc mcp --as YOUR_GRANT_ID --dir /absolute/path/to/hc-store',
+    clients: ['generic'],
+  },
+  {
     id: 'puppeteer',
     name: 'Puppeteer',
     description: 'Browser automation and web scraping capabilities.',
